@@ -1,0 +1,30 @@
+# LiteLLM proxy config. Inference only. Not a Warden authority.
+model_list:
+  - model_name: ssa-chat
+    litellm_params:
+      model: ollama/llama3.1:8b
+      api_base: http://ollama:11434
+  - model_name: ssa-code
+    litellm_params:
+      model: ollama/qwen2.5-coder:7b
+      api_base: http://ollama:11434
+  - model_name: ssa-embed
+    litellm_params:
+      model: ollama/nomic-embed-text
+      api_base: http://ollama:11434
+  - model_name: ssa-long
+    litellm_params:
+      model: openai/local-vllm
+      api_base: http://vllm:8000/v1
+      api_key: os.environ/VLLM_API_KEY
+
+router_settings:
+  routing_strategy: simple-shuffle
+  num_retries: 2
+  timeout: 120
+  allowed_fails: 2
+
+general_settings:
+  master_key: os.environ/SSA_LITELLM_MASTER_KEY
+  max_internal_user_budget: 0
+  disable_spend_logs: true

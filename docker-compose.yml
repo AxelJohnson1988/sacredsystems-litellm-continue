@@ -1,0 +1,27 @@
+# Local inference stack for Node-1 (Dell workstation) or any Linux host.
+# Warden / Phoenix state is not in this compose file on purpose.
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    restart: unless-stopped
+
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    depends_on:
+      - ollama
+    ports:
+      - "4000:4000"
+    environment:
+      SSA_LITELLM_MASTER_KEY: ${SSA_LITELLM_MASTER_KEY:-sk-ssa-local}
+      VLLM_API_KEY: ${VLLM_API_KEY:-local}
+    volumes:
+      - ./litellm_config.yaml:/app/config.yaml:ro
+    command: ["--config", "/app/config.yaml", "--port", "4000", "--host", "0.0.0.0"]
+    restart: unless-stopped
+
+volumes:
+  ollama_models:

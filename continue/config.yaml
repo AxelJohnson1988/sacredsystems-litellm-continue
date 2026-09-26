@@ -1,0 +1,29 @@
+name: SacredSystems local Continue
+version: 1.0.0
+schema: v1
+models:
+  - name: SSA Chat (via LiteLLM)
+    provider: openai
+    model: ssa-chat
+    apiBase: http://127.0.0.1:4000/v1
+    apiKey: ${SSA_LITELLM_MASTER_KEY}
+  - name: SSA Code (via LiteLLM)
+    provider: openai
+    model: ssa-code
+    apiBase: http://127.0.0.1:4000/v1
+    apiKey: ${SSA_LITELLM_MASTER_KEY}
+  - name: SSA Direct Ollama
+    provider: ollama
+    model: llama3.1:8b
+    apiBase: http://127.0.0.1:11434
+tabAutocompleteModel:
+  name: SSA Code Autocomplete
+  provider: openai
+  model: ssa-code
+  apiBase: http://127.0.0.1:4000/v1
+  apiKey: ${SSA_LITELLM_MASTER_KEY}
+embeddingsProvider:
+  provider: openai
+  model: ssa-embed
+  apiBase: http://127.0.0.1:4000/v1
+  apiKey: ${SSA_LITELLM_MASTER_KEY}
